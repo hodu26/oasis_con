@@ -1,18 +1,22 @@
 package com.example.oasis_con
 
 import android.os.Bundle
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.kakao.vectormap.*
-import com.kakao.vectormap.RoadViewRequest.Marker
-import com.kakao.vectormap.label.LabelOptions
-import com.kakao.vectormap.label.LabelStyle
-import com.kakao.vectormap.label.LabelStyles
+import com.kakao.vectormap.label.*
+import com.kakao.vectormap.LatLng
+
+data class Marker(
+    var markerId: Long,
+    var markerName: String? = null,
+    var pos: LatLng
+)
+
+private var markers = ArrayList<Marker>()
 
 class MapActivity : AppCompatActivity() {
 
-    private lateinit var mapView: MapView
-    private lateinit var kakaoMap: KakaoMap
+    lateinit var mapView: MapView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,12 +33,30 @@ class MapActivity : AppCompatActivity() {
             }
         }, object : KakaoMapReadyCallback() {
             override fun onMapReady(kakaoMap: KakaoMap) {
-                // 인증 후 API 가 정상적으로 실행될 때 호출됨
+                val lat1 = LatLng.from(33.452278,126.567803)
+                val lat2 = LatLng.from(34.521247,127.315544)
+                val lat3 = LatLng.from(33.891222,126.464988)
 
-                getArrowLocation()
+                val mark1 = Marker(1,"A", lat1)
+                val mark2 = Marker(2,"B", lat2)
+                val mark3 = Marker(3,"C", lat3)
+
+                markers.add(mark1)
+                markers.add(mark2)
+                markers.add(mark3)
+
+
+                for(data in markers){
+
+                    val styles = kakaoMap.labelManager?.addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.location).setZoomLevel(0)))
+                    val options = LabelOptions.from(data.pos).setStyles(styles)
+                    val layer = kakaoMap.labelManager?.layer
+                    val label = layer?.addLabel(options)
+                }
             }
         })
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -44,12 +66,5 @@ class MapActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         mapView.pause()   // MapView 의 pause 호출
-    }
-
-    private fun getArrowLocation() {
-        val styles = kakaoMap.labelManager?.addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.arrow)))
-        val options = LabelOptions.from(LatLng.from(37.394660, 127.111182)).setStyles(styles)
-        val layer = kakaoMap.labelManager?.layer
-        val label = layer?.addLabel(options)
     }
 }
