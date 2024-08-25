@@ -13,8 +13,8 @@
 
     <com.kakao.vectormap.MapView
         android:id="@+id/map_view"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="1000dp"
+        android:layout_height="1000dp"
         android:layout_centerInParent="true" />
 
 
