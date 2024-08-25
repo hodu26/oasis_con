@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -50,7 +52,11 @@
             android:exported="true"
             android:label="지도" />
 
-
+        <activity
+            android:name=".ItemActivity"
+            android:exported="true"
+            android:label="ㅋㅋ" />
+            />
 
     </application>
 

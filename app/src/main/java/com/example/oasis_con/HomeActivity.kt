@@ -3,6 +3,7 @@ package com.example.oasis_con
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 
@@ -20,11 +21,13 @@ class HomeActivity : AppCompatActivity() {
         val boardButton = findViewById<Button>(R.id.boardButton)
         val chatButton = findViewById<Button>(R.id.chatButton)
         val mapButton = findViewById<Button>(R.id.mapButton)
+        val apiButton = findViewById<Button>(R.id.ApiButton)
 
         logoutButton.setOnClickListener { logout() }
         boardButton.setOnClickListener { openBoard() }
         chatButton.setOnClickListener { openChat() }
         mapButton.setOnClickListener { openMap() }
+        apiButton.setOnClickListener { openApi() }
     }
 
     private fun logout() {
@@ -47,5 +50,15 @@ class HomeActivity : AppCompatActivity() {
     private fun openMap() {
         val intent = Intent(this, MapActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun openApi() {
+        try {
+            val intent = Intent(this, ItemActivity::class.java)
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            e.printStackTrace()
+        }
     }
 }
