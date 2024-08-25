@@ -5,6 +5,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.kakao.vectormap.*
 import com.kakao.vectormap.RoadViewRequest.Marker
+import com.kakao.vectormap.label.LabelOptions
+import com.kakao.vectormap.label.LabelStyle
+import com.kakao.vectormap.label.LabelStyles
 
 class MapActivity : AppCompatActivity() {
 
@@ -27,6 +30,8 @@ class MapActivity : AppCompatActivity() {
         }, object : KakaoMapReadyCallback() {
             override fun onMapReady(kakaoMap: KakaoMap) {
                 // 인증 후 API 가 정상적으로 실행될 때 호출됨
+
+                getArrowLocation()
             }
         })
     }
@@ -39,5 +44,12 @@ class MapActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         mapView.pause()   // MapView 의 pause 호출
+    }
+
+    private fun getArrowLocation() {
+        val styles = kakaoMap.labelManager?.addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.arrow)))
+        val options = LabelOptions.from(LatLng.from(37.394660, 127.111182)).setStyles(styles)
+        val layer = kakaoMap.labelManager?.layer
+        val label = layer?.addLabel(options)
     }
 }

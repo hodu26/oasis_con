@@ -20,11 +20,13 @@ class HomeActivity : AppCompatActivity() {
         val boardButton = findViewById<Button>(R.id.boardButton)
         val chatButton = findViewById<Button>(R.id.chatButton)
         val mapButton = findViewById<Button>(R.id.mapButton)
+        val gameButton = findViewById<Button>(R.id.gameButton)
 
         logoutButton.setOnClickListener { logout() }
         boardButton.setOnClickListener { openBoard() }
         chatButton.setOnClickListener { openChat() }
         mapButton.setOnClickListener { openMap() }
+        gameButton.setOnClickListener { openGame() }
     }
 
     private fun logout() {
@@ -46,6 +48,11 @@ class HomeActivity : AppCompatActivity() {
 
     private fun openMap() {
         val intent = Intent(this, MapActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun openGame() {
+        val intent = Intent(this, GameActivity::class.java)
         startActivity(intent)
     }
 }

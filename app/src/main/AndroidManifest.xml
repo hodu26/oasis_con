@@ -50,6 +50,11 @@
             android:exported="true"
             android:label="지도" />
 
+        <activity
+            android:name=".GameActivity"
+            android:exported="true"
+            android:label="게임" />
+
 
 
     </application>

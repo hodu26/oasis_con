@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<!--    &lt;!&ndash; 표적을 나타내는 이미지뷰 &ndash;&gt;-->
+<!--    <ImageView-->
+<!--        android:id="@+id/target"-->
+<!--        android:layout_width="1000dp"-->
+<!--        android:layout_height="1000dp"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:src="@drawable/archery" />-->
+
+    <com.kakao.vectormap.MapView
+        android:id="@+id/map_view"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true" />
+
+
+    <!-- 화살을 나타내는 이미지뷰 -->
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/arrow" />
+</RelativeLayout>
