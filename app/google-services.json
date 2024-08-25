@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "626655892417",
+    "project_id": "hackathon-f01a9",
+    "storage_bucket": "hackathon-f01a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:626655892417:android:e27b78b92b5bce13a25540",
+        "android_client_info": {
+          "package_name": "com.example.oasis_con"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC--F2OwGMI-IPH6ia6yrMNgxBaUkfTN0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
