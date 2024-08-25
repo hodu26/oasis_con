@@ -2,11 +2,8 @@ package com.example.oasis_con
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -25,10 +22,8 @@ class ItemActivity : AppCompatActivity() {
     private lateinit var btnFetchData: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ItemAdapter
-
-    private var currentPage = 1
-    private val maxPage = 6
-    private val itemsList = mutableListOf<Item>()
+    private lateinit var etLatitude: EditText
+    private lateinit var etLongitude: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,49 +31,44 @@ class ItemActivity : AppCompatActivity() {
 
         btnFetchData = findViewById(R.id.btnFetchData)
         recyclerView = findViewById(R.id.recyclerView)
+        etLatitude = findViewById(R.id.etLatitude)
+        etLongitude = findViewById(R.id.etLongitude)
 
         adapter = ItemAdapter(emptyList())
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         btnFetchData.setOnClickListener {
-            currentPage = 1
-            itemsList.clear()
-            fetchData()
+            val latitude = etLatitude.text.toString().toDoubleOrNull()
+            val longitude = etLongitude.text.toString().toDoubleOrNull()
+            if (latitude != null && longitude != null) {
+                fetchData(latitude, longitude)
+            } else {
+                Toast.makeText(this, "유효한 좌표를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
-    private fun fetchData() {
+    private fun fetchData(latitude: Double, longitude: Double) {
         lifecycleScope.launch {
             try {
-                while (currentPage <= maxPage) {
-                    val response = withContext(Dispatchers.IO) {
-                        apiService.getAreaBasedList(
-                            serviceKey = "fQkSfrlIO/O+qEyS+oclHBllyMuB8aBKpu2f1LVLAo2ffOoaSQueJrWVr7eqpRCRMSoqHaOFETU+VBXhtxOaFQ==",
-                            numOfRows = 12,
-                            pageNo = currentPage,
-                            mobileOS = "ETC",
-                            mobileApp = "AppTest",
-                            type = "json",
-                            listYN = "Y",
-                            arrange = "A",
-                            contentTypeId = 25,
-                            areaCode = "37",
-                            sigunguCode = "",
-                            cat1 = "",
-                            cat2 = "",
-                            cat3 = ""
-                        )
-                    }
-                    val newItems = response.response.body.items.item
-                    if (newItems.isNotEmpty()) {
-                        itemsList.addAll(newItems)
-                        adapter.updateItems(itemsList)
-                        currentPage++
-                    } else {
-                        break  // 더 이상 데이터가 없으면 루프 종료
-                    }
+                val response = withContext(Dispatchers.IO) {
+                    apiService.getLocationBasedList(
+                        serviceKey = "fQkSfrlIO/O+qEyS+oclHBllyMuB8aBKpu2f1LVLAo2ffOoaSQueJrWVr7eqpRCRMSoqHaOFETU+VBXhtxOaFQ==",
+                        numOfRows = 20,
+                        pageNo = 1,
+                        mobileOS = "ETC",
+                        mobileApp = "AppTest",
+                        type = "json",
+                        listYN = "Y",
+                        arrange = "A",
+                        mapX = longitude,
+                        mapY = latitude,
+                        radius = 20000,  // 20km 반경
+                        contentTypeId = 12  // 관광지 타입
+                    )
                 }
+                adapter.updateItems(response.response.body.items.item)
                 Toast.makeText(this@ItemActivity, "데이터 조회 완료!", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 Toast.makeText(this@ItemActivity, "오류 발생: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -97,8 +87,8 @@ class ItemActivity : AppCompatActivity() {
 }
 
 interface ApiService {
-    @GET("B551011/KorService1/areaBasedList1")
-    suspend fun getAreaBasedList(
+    @GET("B551011/KorService1/locationBasedList1")
+    suspend fun getLocationBasedList(
         @Query("serviceKey") serviceKey: String,
         @Query("numOfRows") numOfRows: Int,
         @Query("pageNo") pageNo: Int,
@@ -107,12 +97,10 @@ interface ApiService {
         @Query("_type") type: String,
         @Query("listYN") listYN: String,
         @Query("arrange") arrange: String,
-        @Query("contentTypeId") contentTypeId: Int,
-        @Query("areaCode") areaCode: String,
-        @Query("sigunguCode") sigunguCode: String,
-        @Query("cat1") cat1: String,
-        @Query("cat2") cat2: String,
-        @Query("cat3") cat3: String
+        @Query("mapX") mapX: Double,
+        @Query("mapY") mapY: Double,
+        @Query("radius") radius: Int,
+        @Query("contentTypeId") contentTypeId: Int
     ): ApiResponse
 }
 
