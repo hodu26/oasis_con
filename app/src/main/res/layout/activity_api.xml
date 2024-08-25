@@ -7,14 +7,41 @@
     android:layout_height="match_parent"
     tools:context=".ItemActivity">
 
+    <EditText
+        android:id="@+id/etLatitude"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="위도 (예: 33.891222)"
+        android:inputType="numberDecimal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/etLongitude"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"/>
+
+    <EditText
+        android:id="@+id/etLongitude"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="경도 (예: 126.464988)"
+        android:inputType="numberDecimal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/etLatitude"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"/>
+
     <Button
         android:id="@+id/btnFetchData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="데이터 조회"
-        app:layout_constraintTop_toTopOf="parent"
+        android:text="주변 관광지 검색"
+        app:layout_constraintTop_toBottomOf="@+id/etLatitude"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="16dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
