@@ -31,7 +31,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:gravity="center_vertical">
 
             <!-- 제목 텍스트뷰: 더 작고 모던한 폰트 크기, 간결한 스타일 -->
             <TextView
@@ -57,22 +58,46 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/roboto_regular"/>
 
-            <!-- 거리 텍스트뷰: 현대적인 강조 색상과 더 작은 크기, 둥근 배경 적용 -->
-            <TextView
-                android:id="@+id/tvDistance"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_marginTop="8dp"
-                android:textSize="12sp"
-                android:textColor="#2196F3"
-                android:background="@drawable/distance_background"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:fontFamily="@font/roboto_medium"
-                android:backgroundTint="#E3F2FD"
-                android:elevation="2dp"/>
+                android:gravity="center_vertical">
+
+                <!-- 거리 텍스트뷰: 현대적인 강조 색상과 더 작은 크기, 둥근 배경 적용 -->
+                <TextView
+                    android:id="@+id/tvDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="#2196F3"
+                    android:background="@drawable/distance_background"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:backgroundTint="#E3F2FD"
+                    android:elevation="2dp"/>
+
+                <!-- Scrap 버튼: 오른쪽에 추가 -->
+                <Button
+                    android:id="@+id/btnScrap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="0dp"
+                    android:text="Scrap"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/button_background3"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
