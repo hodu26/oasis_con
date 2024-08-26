@@ -64,9 +64,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, Home2Activity::class.java)
             startActivity(intent)
             finish()
         }
     }
+
 }
