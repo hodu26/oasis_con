@@ -1,39 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@drawable/backgroud_img"
+    android:padding="16dp">
 
-    <Button
-        android:id="@+id/logoutButton"
+    <TextView
+        android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logout" />
-
-    <Button
-        android:id="@+id/boardButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Board" />
-
-    <Button
-        android:id="@+id/chatButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Chat" />
-
-    <Button
-        android:id="@+id/mapButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Map" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp"
+        android:text="호남 여행의 시작,\n호남인과 함께!"
+        android:textColor="#FFFFFF"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:shadowColor="#80000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="4"/>
 
     <Button
         android:id="@+id/gameButton"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Game" />
+        android:layout_centerInParent="true"
+        android:text="Game"
+        android:textSize="18sp"
+        android:padding="16dp"
+        android:background="@drawable/rounded_button"
+        android:textColor="#FFFFFF"/>
 
+<<<<<<< HEAD
     <Button
         android:id="@+id/ApiButton"
         android:layout_width="match_parent"
@@ -53,3 +52,6 @@
         android:text="My Page" />
 
 </LinearLayout>
+=======
+</RelativeLayout>
+>>>>>>> 0c28255ea8fa03b9fb87479bb6d7451bc54d9677
