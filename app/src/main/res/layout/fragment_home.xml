@@ -40,4 +40,16 @@
         android:layout_height="wrap_content"
         android:text="Api" />
 
+    <Button
+        android:id="@+id/InfoButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Info" />
+
+    <Button
+        android:id="@+id/MypageButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="My Page" />
+
 </LinearLayout>

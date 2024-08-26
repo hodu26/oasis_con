@@ -1,32 +1,29 @@
 package com.example.oasis_con
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import android.content.Intent
+import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 
-class ProfileFragment : Fragment() {
+class MyPageActivity : AppCompatActivity() {
+
     private lateinit var database: DatabaseReference
     private lateinit var profileName: TextView
     private lateinit var profileImage: ImageView
     private lateinit var editProfile: TextView
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view =  inflater.inflate(R.layout.fragment_profile, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_mypage)
 
-        profileName = view.findViewById(R.id.profile_name)
-        profileImage = view.findViewById(R.id.profile_image)
-        editProfile = view.findViewById(R.id.edit_profile)
+        profileName = findViewById(R.id.profile_name)
+        profileImage = findViewById(R.id.profile_image)
+        editProfile = findViewById(R.id.edit_profile)
 
         // 현재 사용자 가져오기
         val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -43,10 +40,9 @@ class ProfileFragment : Fragment() {
                     val profileImageUrl = snapshot.child("profileImageUrl").getValue(String::class.java)
                     if (!profileImageUrl.isNullOrEmpty()) {
                         // Glide를 사용하여 프로필 이미지 로드
-                        Glide.with(this@ProfileFragment)
+                        Glide.with(this@MyPageActivity)
                             .load(profileImageUrl)
                             .placeholder(R.drawable.profile) // 로딩 중 표시할 기본 이미지
-                            .apply(RequestOptions.circleCropTransform())  // 이미지 원형으로 변환
                             .into(profileImage)
                     }
                 }
@@ -59,10 +55,8 @@ class ProfileFragment : Fragment() {
 
         // 프로필 수정 텍스트뷰 클릭 이벤트 처리
         editProfile.setOnClickListener {
-            val intent = Intent(activity, ProfileEditActivity::class.java)
+            val intent = Intent(this, ProfileEditActivity::class.java)
             startActivity(intent)
         }
-
-        return view
     }
 }

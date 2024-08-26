@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -183,5 +184,12 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="36dp"
         android:layout_marginEnd="36dp" />
+
+    <ImageView
+        android:id="@+id/profileImageView"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:src="@drawable/profile"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

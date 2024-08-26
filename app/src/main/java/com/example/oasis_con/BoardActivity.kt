@@ -27,7 +27,7 @@ class BoardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_board)
 
         mDatabase = FirebaseDatabase.getInstance("https://hackathon-f01a9-default-rtdb.asia-southeast1.firebasedatabase.app").reference.child("posts")
-        mStorage = FirebaseStorage.getInstance()
+        mStorage = FirebaseStorage.getInstance("gs://hackathon-f01a9.appspot.com")
 
         titleEditText = findViewById(R.id.titleEditText)
         contentEditText = findViewById(R.id.contentEditText)

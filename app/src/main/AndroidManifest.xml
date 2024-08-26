@@ -68,6 +68,21 @@
             android:exported="true"
             android:label="ㅋㅋ" />
 
+        <activity
+            android:name=".InfoActivity"
+            android:exported="true"
+            android:label="Info" />
+
+        <activity
+            android:name=".MyPageActivity"
+            android:exported="true"
+            android:label="MyPage" />
+
+        <activity
+            android:name=".ProfileEditActivity"
+            android:exported="true"
+            android:label="ProfileEdit" />
+
     </application>
 
 </manifest>
