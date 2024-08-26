@@ -1,21 +1,23 @@
 package com.example.oasis_con
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
+import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.PropertyValuesHolder
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.drawToBitmap
+import com.kakao.vectormap.GestureType
 import com.kakao.vectormap.KakaoMap
+import com.kakao.vectormap.KakaoMap.OnCameraMoveEndListener
 import com.kakao.vectormap.KakaoMapReadyCallback
-import com.kakao.vectormap.KakaoMapSdk
 import com.kakao.vectormap.LatLng
+import com.kakao.vectormap.LatLngBounds
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
 import com.kakao.vectormap.label.LabelOptions
@@ -37,9 +39,16 @@ class GameActivity : AppCompatActivity() {
     private lateinit var scaleAnimator: ObjectAnimator
     private lateinit var translationXAnimator: ObjectAnimator
 
+    // 호남권만 나오도록 지도 범위 설정
+    val southwest = LatLng.from(34.0, 126.0) // 남서쪽 좌표 (전라남도 서쪽)
+    val northeast = LatLng.from(36.5, 128.0) // 북동쪽 좌표 (전라북도 동쪽)
+    val bounds = LatLngBounds(southwest, northeast)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
+
+//        window.addFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
 
         // kakao map
         mapView = findViewById(R.id.map_view)
@@ -54,6 +63,21 @@ class GameActivity : AppCompatActivity() {
         }, object : KakaoMapReadyCallback() {
             override fun onMapReady(kakaoMap: KakaoMap) {
                 // 인증 후 API 가 정상적으로 실행될 때 호출됨
+                this@GameActivity.kakaoMap = kakaoMap // KakaoMap 객체 초기화
+
+                // 지도 카메라를 범위에 맞춰 이동
+                kakaoMap.moveCamera(com.kakao.vectormap.camera.CameraUpdateFactory.fitMapPoints(bounds))
+
+                // 모든 제스처 비활성화
+                kakaoMap.setGestureEnable(GestureType.getEnum(1), false) // 스크롤 비활성화
+                kakaoMap.setGestureEnable(GestureType.getEnum(2), false) // 스크롤 비활성화
+                kakaoMap.setGestureEnable(GestureType.getEnum(3), false) // 스크롤 비활성화
+                kakaoMap.setGestureEnable(GestureType.getEnum(4), false) // 스크롤 비활성화
+
+                // MapView에 포커스를 주지 않고 터치 이벤트 비활성화
+                mapView.setOnTouchListener { _, _ -> true }
+                mapView.isFocusable = false
+                mapView.isFocusableInTouchMode = false
             }
         })
 
@@ -166,6 +190,23 @@ class GameActivity : AppCompatActivity() {
         val targetLocation = IntArray(2)
 
         arrow.getLocationOnScreen(arrowLocation)
+
+        // 화살이 화면에서 떨어진 좌표를 받아옴
+        val arrowX = arrowLocation[0]
+        val arrowY = arrowLocation[1]
+
+        // kakaoMap 초기화 확인
+        if (this::kakaoMap.isInitialized) {
+            // 화살이 떨어진 화면 좌표를 지도 좌표로 변환
+            val latLng: LatLng? = kakaoMap.fromScreenPoint(arrowX, arrowY)
+
+            // 변환된 지도 좌표를 로그로 출력하거나, 지도에 마커를 추가하는 등의 작업을 할 수 있음
+            Toast.makeText(this, "Arrow hit at: ${latLng?.latitude}, ${latLng?.longitude}", Toast.LENGTH_LONG).show()
+        } else {
+            // 초기화되지 않은 경우, 예외 처리 (예: 로그 출력 또는 기본 동작)
+            Toast.makeText(this, "Map is not ready yet", Toast.LENGTH_LONG).show()
+        }
+
         mapView.getLocationOnScreen(targetLocation)
 
         // 화살과 표적의 위치를 비교하여 충돌을 확인
@@ -175,7 +216,7 @@ class GameActivity : AppCompatActivity() {
             arrowLocation[1] + arrow.height > targetLocation[1]) {
             // 충돌한 경우
             stopTargetAnimation() // 충돌하면 타겟 애니메이션을 멈춤
-            getArrowLocation()
+//            getArrowLocation()
             Toast.makeText(this, "Hit!", Toast.LENGTH_SHORT).show()
         } else {
             // 충돌하지 않은 경우
@@ -191,6 +232,7 @@ class GameActivity : AppCompatActivity() {
         val layer = kakaoMap.labelManager?.layer
         val label = layer?.addLabel(options)
     }
+
 
     private fun stopTargetAnimation() {
         // 타겟 애니메이션을 멈추는 로직
