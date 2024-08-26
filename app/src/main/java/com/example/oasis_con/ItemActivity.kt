@@ -55,7 +55,7 @@ class ItemActivity : AppCompatActivity() {
         val latitude = intent.getDoubleExtra("latitude", 0.0)
         val longitude = intent.getDoubleExtra("longitude", 0.0)
 
-        tvCoordinates.text = "위도: $latitude, 경도: $longitude"
+        tvCoordinates.text = "위도: $latitude \n경도: $longitude"
 
         fetchData(latitude, longitude)
 

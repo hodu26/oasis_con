@@ -5,14 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="8dp"
+    android:background="@android:color/white"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="8dp">
 
         <ImageView
             android:id="@+id/ivCourseImage"
@@ -26,15 +28,21 @@
             android:id="@+id/tvDetailName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
+            android:textColor="#212121"
+            android:layout_marginBottom="12dp"
+            android:letterSpacing="0.02"
+            android:fontFamily="@font/roboto_medium"/>
 
         <TextView
             android:id="@+id/tvDetailDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"/>
+            android:textSize="15sp"
+            android:textColor="#757575"
+            android:lineSpacingExtra="6dp"
+            android:fontFamily="@font/roboto_regular"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

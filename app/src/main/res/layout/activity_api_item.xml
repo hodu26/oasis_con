@@ -4,61 +4,75 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    android:layout_margin="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp"
+    android:backgroundTint="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:padding="16dp">
 
+        <!-- 이미지뷰: 보다 세련된 테두리와 음영을 추가 -->
         <ImageView
             android:id="@+id/ivFirstImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:scaleType="centerCrop"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/image_rounded_corner"/>
+            android:background="@drawable/image_rounded_corner"
+            android:elevation="2dp"
+            android:clipToOutline="true"
+            android:contentDescription="Image description"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_weight="1">
 
+            <!-- 제목 텍스트뷰: 더 작고 모던한 폰트 크기, 간결한 스타일 -->
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="#333333"
+                android:textColor="#212121"
                 android:maxLines="2"
-                android:ellipsize="end"/>
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_medium"/>
 
+            <!-- 주소 텍스트뷰: 보다 작은 폰트 크기와 밝은 색상 -->
             <TextView
                 android:id="@+id/tvAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:textSize="14sp"
-                android:textColor="#666666"
+                android:textSize="12sp"
+                android:textColor="#757575"
                 android:maxLines="1"
-                android:ellipsize="end"/>
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_regular"/>
 
+            <!-- 거리 텍스트뷰: 현대적인 강조 색상과 더 작은 크기, 둥근 배경 적용 -->
             <TextView
                 android:id="@+id/tvDistance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textColor="#2196F3"
                 android:background="@drawable/distance_background"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:paddingTop="4dp"
-                android:paddingBottom="4dp"/>
+                android:paddingBottom="4dp"
+                android:fontFamily="@font/roboto_medium"
+                android:backgroundTint="#E3F2FD"
+                android:elevation="2dp"/>
 
         </LinearLayout>
     </LinearLayout>

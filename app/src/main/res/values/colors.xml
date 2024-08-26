@@ -9,6 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="brown">#654607</color>
     <color name="gray">#585858</color>
+    <color name="textColorPrimary">#212121</color>
+    <color name="textColorSecondary">#757575</color>
+    <color name="backgroundColor">#F5F5F5</color>
+    <color name="cardStrokeColor">#E0E0E0</color>
+    <color name="chipBackgroundColor">#2196F3</color>
 
     <!-- Primary color -->
     <color name="colorPrimary">#6200EE</color>
