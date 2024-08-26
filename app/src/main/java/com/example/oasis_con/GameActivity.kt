@@ -20,6 +20,7 @@ import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
 import kotlin.math.min
 import kotlin.random.Random
+import android.content.Intent
 
 class GameActivity : AppCompatActivity() {
 
@@ -200,38 +201,36 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun checkIfHit() {
-        // 간단히 충돌 여부를 확인하는 로직
         val arrowLocation = IntArray(2)
         val mapFrameLocation = IntArray(2)
 
         arrow.getLocationOnScreen(arrowLocation)
         mapFrame.getLocationOnScreen(mapFrameLocation)
 
-        // 화살이 FrameLayout(mapFrame) 안에서만 충돌로 인정되도록 위치 확인
         if (arrowLocation[0] < mapFrameLocation[0] + mapFrame.width &&
             arrowLocation[0] + arrow.width > mapFrameLocation[0] &&
             arrowLocation[1] < mapFrameLocation[1] + mapFrame.height &&
             arrowLocation[1] + arrow.height > mapFrameLocation[1]) {
 
-            // 충돌한 경우
-            stopMapAnimation() // 충돌하면 타겟 애니메이션을 멈춤
+            stopMapAnimation()
 
-            // kakaoMap 초기화 확인
             if (this::kakaoMap.isInitialized) {
-                // 화살이 떨어진 화면 좌표를 지도 좌표로 변환
                 val latLng: LatLng? = kakaoMap.fromScreenPoint(arrowLocation[0], arrowLocation[1])
 
-                // 변환된 지도 좌표를 로그로 출력하거나, 지도에 마커를 추가하는 등의 작업을 할 수 있음
-                Toast.makeText(this, "Arrow hit at: ${latLng?.latitude}, ${latLng?.longitude}", Toast.LENGTH_LONG).show()
+                // ItemActivity로 전환
+                val intent = Intent(this, ItemActivity::class.java)
+                intent.putExtra("latitude", latLng?.latitude)
+                intent.putExtra("longitude", latLng?.longitude)
+                startActivity(intent)
 
+                // 현재 액티비티 종료 (선택사항)
+                // finish()
             } else {
-                // 초기화되지 않은 경우, 예외 처리 (예: 로그 출력 또는 기본 동작)
                 Toast.makeText(this, "Map is not ready yet", Toast.LENGTH_LONG).show()
             }
 
             Toast.makeText(this, "Hit!", Toast.LENGTH_SHORT).show()
         } else {
-            // 충돌하지 않은 경우
             resetArrow()
             Toast.makeText(this, "Miss!", Toast.LENGTH_SHORT).show()
         }

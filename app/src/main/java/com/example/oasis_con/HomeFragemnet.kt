@@ -56,11 +56,13 @@ class HomeFragment : Fragment() {
 
     private fun onGameClicked() {
         // 게임 화면으로 이동하는 로직 구현
-        Toast.makeText(context, "Game clicked", Toast.LENGTH_SHORT).show()
+        val intent = Intent(activity, GameActivity::class.java)
+        startActivity(intent)
     }
 
     private fun onApiClicked() {
         // API 관련 기능을 실행하는 로직 구현
-        Toast.makeText(context, "API clicked", Toast.LENGTH_SHORT).show()
+        val intent = Intent(activity, ItemActivity::class.java)
+        startActivity(intent)
     }
 }

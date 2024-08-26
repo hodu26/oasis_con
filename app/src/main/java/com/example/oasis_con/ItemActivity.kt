@@ -1,9 +1,11 @@
 package com.example.oasis_con
 
+import ItemAdapter
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -16,14 +18,27 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
+import com.google.gson.GsonBuilder
+import com.example.oasis_con.ApiService
+
 
 class ItemActivity : AppCompatActivity() {
-
     private lateinit var btnFetchData: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ItemAdapter
-    private lateinit var etLatitude: EditText
-    private lateinit var etLongitude: EditText
+    private lateinit var tvCoordinates: TextView
+
+    private val apiService: ApiService by lazy {
+        val gson = GsonBuilder()
+            .setLenient()
+            .create()
+
+        Retrofit.Builder()
+            .baseUrl("http://apis.data.go.kr/")
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+            .create(ApiService::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,44 +46,48 @@ class ItemActivity : AppCompatActivity() {
 
         btnFetchData = findViewById(R.id.btnFetchData)
         recyclerView = findViewById(R.id.recyclerView)
-        etLatitude = findViewById(R.id.etLatitude)
-        etLongitude = findViewById(R.id.etLongitude)
+        tvCoordinates = findViewById(R.id.tvCoordinates)
 
         adapter = ItemAdapter(emptyList())
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        val latitude = intent.getDoubleExtra("latitude", 0.0)
+        val longitude = intent.getDoubleExtra("longitude", 0.0)
+
+        tvCoordinates.text = "위도: $latitude, 경도: $longitude"
+
+        fetchData(latitude, longitude)
+
         btnFetchData.setOnClickListener {
-            val latitude = etLatitude.text.toString().toDoubleOrNull()
-            val longitude = etLongitude.text.toString().toDoubleOrNull()
-            if (latitude != null && longitude != null) {
-                fetchData(latitude, longitude)
-            } else {
-                Toast.makeText(this, "유효한 좌표를 입력해주세요.", Toast.LENGTH_SHORT).show()
-            }
+            fetchData(latitude, longitude)
         }
     }
 
     private fun fetchData(latitude: Double, longitude: Double) {
         lifecycleScope.launch {
             try {
-                val response = withContext(Dispatchers.IO) {
-                    apiService.getLocationBasedList(
-                        serviceKey = "fQkSfrlIO/O+qEyS+oclHBllyMuB8aBKpu2f1LVLAo2ffOoaSQueJrWVr7eqpRCRMSoqHaOFETU+VBXhtxOaFQ==",
-                        numOfRows = 20,
-                        pageNo = 1,
-                        mobileOS = "ETC",
-                        mobileApp = "AppTest",
-                        type = "json",
-                        listYN = "Y",
-                        arrange = "A",
-                        mapX = longitude,
-                        mapY = latitude,
-                        radius = 20000,  // 20km 반경
-                        contentTypeId = 12  // 관광지 타입
-                    )
-                }
-                adapter.updateItems(response.response.body.items.item)
+                val allItems = mutableListOf<Item>()
+
+                // 전라북도 데이터 가져오기
+                fetchAreaData(allItems, 37, 6)
+
+                // 전라남도 데이터 가져오기
+                fetchAreaData(allItems, 38, 9)
+
+                // 거리 계산 및 필터링
+                val maxDistance = 25.0 // 최대 거리 (km)
+                val filteredAndSortedItems = allItems
+                    .map { item ->
+                        val itemLat = item.mapy?.toDoubleOrNull() ?: 0.0
+                        val itemLon = item.mapx?.toDoubleOrNull() ?: 0.0
+                        val distance = calculateDistance(latitude, longitude, itemLat, itemLon)
+                        item.apply { this.distance = distance }
+                    }
+                    .filter { it.distance <= maxDistance }
+                    .sortedBy { it.distance }
+
+                adapter.updateItems(filteredAndSortedItems)
                 Toast.makeText(this@ItemActivity, "데이터 조회 완료!", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 Toast.makeText(this@ItemActivity, "오류 발생: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -77,31 +96,36 @@ class ItemActivity : AppCompatActivity() {
         }
     }
 
-    private val apiService: ApiService by lazy {
-        Retrofit.Builder()
-            .baseUrl("https://apis.data.go.kr/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(ApiService::class.java)
+    private suspend fun fetchAreaData(items: MutableList<Item>, areaCode: Int, maxPages: Int) {
+        for (page in 1..maxPages) {
+            val response = withContext(Dispatchers.IO) {
+                apiService.getAreaBasedList(
+                    serviceKey = "fQkSfrlIO/O+qEyS+oclHBllyMuB8aBKpu2f1LVLAo2ffOoaSQueJrWVr7eqpRCRMSoqHaOFETU+VBXhtxOaFQ==",
+                    numOfRows = 12,
+                    pageNo = page,
+                    mobileOS = "ETC",
+                    mobileApp = "AppTest",
+                    type = "json",
+                    listYN = "Y",
+                    arrange = "A",
+                    contentTypeId = 25,
+                    areaCode = areaCode
+                )
+            }
+            items.addAll(response.response.body.items.item)
+        }
     }
-}
 
-interface ApiService {
-    @GET("B551011/KorService1/locationBasedList1")
-    suspend fun getLocationBasedList(
-        @Query("serviceKey") serviceKey: String,
-        @Query("numOfRows") numOfRows: Int,
-        @Query("pageNo") pageNo: Int,
-        @Query("MobileOS") mobileOS: String,
-        @Query("MobileApp") mobileApp: String,
-        @Query("_type") type: String,
-        @Query("listYN") listYN: String,
-        @Query("arrange") arrange: String,
-        @Query("mapX") mapX: Double,
-        @Query("mapY") mapY: Double,
-        @Query("radius") radius: Int,
-        @Query("contentTypeId") contentTypeId: Int
-    ): ApiResponse
+    private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val R = 6371 // 지구의 반경 (km)
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2)
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        return R * c
+    }
 }
 
 data class ApiResponse(val response: Response)
@@ -130,5 +154,6 @@ data class Item(
     val sigungucode: String?,
     val tel: String?,
     val title: String?,
-    val zipcode: String?
+    val zipcode: String?,
+    var distance: Double = 0.0 // 거리 정보를 저장할 새 필드
 )
