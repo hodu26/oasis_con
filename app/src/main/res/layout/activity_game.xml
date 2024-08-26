@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-<!--    &lt;!&ndash; 표적을 나타내는 이미지뷰 &ndash;&gt;-->
-<!--    <ImageView-->
-<!--        android:id="@+id/target"-->
-<!--        android:layout_width="1000dp"-->
-<!--        android:layout_height="1000dp"-->
-<!--        android:layout_centerInParent="true"-->
-<!--        android:src="@drawable/archery" />-->
+    <!-- 배경 이미지 (게임 분위기를 조성) -->
+    <ImageView
+        android:id="@+id/background_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/main_background" />
 
-    <com.kakao.vectormap.MapView
-        android:id="@+id/map_view"
-        android:layout_width="1000dp"
-        android:layout_height="1000dp"
-        android:layout_centerInParent="true" />
+    <!-- Kakao Map을 감싸는 틀 -->
+    <FrameLayout
+        android:id="@+id/map_frame"
+        android:layout_width="350dp"
+        android:layout_height="600dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/main_background"
+        android:elevation="8dp"
+        android:padding="8dp">
 
+        <!-- Kakao Map View -->
+        <com.kakao.vectormap.MapView
+            android:id="@+id/map_view"
+            android:layout_width="500dp"
+            android:layout_height="1000dp"
+            android:layout_gravity="center"
+            android:background="@color/white" />
+
+    </FrameLayout>
 
     <!-- 화살을 나타내는 이미지뷰 -->
     <ImageView
@@ -25,5 +39,21 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/arrow" />
+        android:src="@drawable/arrow"
+        android:elevation="10dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- 상단에 게임 제목이나 점수 등을 표시할 수 있는 타이틀 영역 -->
+    <TextView
+        android:id="@+id/game_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Archery Game"
+        android:textSize="24sp"
+        android:textColor="@color/brown"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" />
+
 </RelativeLayout>
