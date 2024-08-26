@@ -71,7 +71,6 @@
             android:label="ㅋㅋ" />
 
         <activity
-<<<<<<< HEAD
             android:name=".InfoActivity"
             android:exported="true"
             android:label="Info" />
@@ -86,12 +85,10 @@
             android:exported="true"
             android:label="ProfileEdit" />
 
-    </application>
-=======
+        <activity
             android:name=".CourseDetailActivity"
             android:exported="true"
             android:label="ㅋㅋ" />
->>>>>>> 0c28255ea8fa03b9fb87479bb6d7451bc54d9677
 
         <activity
             android:name=".CourseDetailAdapter"

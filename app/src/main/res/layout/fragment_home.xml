@@ -32,26 +32,22 @@
         android:background="@drawable/rounded_button"
         android:textColor="#FFFFFF"/>
 
-<<<<<<< HEAD
-    <Button
-        android:id="@+id/ApiButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Api" />
+<!--    <Button-->
+<!--        android:id="@+id/ApiButton"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Api" />-->
 
-    <Button
-        android:id="@+id/InfoButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Info" />
+<!--    <Button-->
+<!--        android:id="@+id/InfoButton"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Info" />-->
 
-    <Button
-        android:id="@+id/MypageButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="My Page" />
+<!--    <Button-->
+<!--        android:id="@+id/MypageButton"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="My Page" />-->
 
-</LinearLayout>
-=======
 </RelativeLayout>
->>>>>>> 0c28255ea8fa03b9fb87479bb6d7451bc54d9677
