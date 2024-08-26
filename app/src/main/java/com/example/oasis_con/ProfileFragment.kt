@@ -20,13 +20,19 @@ class ProfileFragment : Fragment() {
     private lateinit var profileName: TextView
     private lateinit var profileImage: ImageView
     private lateinit var editProfile: TextView
+    private lateinit var logout: TextView
+
+    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view =  inflater.inflate(R.layout.fragment_profile, container, false)
 
+        mAuth = FirebaseAuth.getInstance()
+
         profileName = view.findViewById(R.id.profile_name)
         profileImage = view.findViewById(R.id.profile_image)
         editProfile = view.findViewById(R.id.edit_profile)
+        logout = view.findViewById(R.id.logoutButton)
 
         // 현재 사용자 가져오기
         val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -63,6 +69,17 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
         }
 
+        // 프로필 수정 텍스트뷰 클릭 이벤트 처리
+        logout.setOnClickListener {
+            logout()
+        }
+
         return view
+    }
+
+    private fun logout() {
+        mAuth.signOut()
+        val intent = Intent(activity, MainActivity::class.java)
+        startActivity(intent)
     }
 }
